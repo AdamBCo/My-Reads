@@ -19,9 +19,13 @@ class BooksApp extends React.Component {
   }
 
   moveBook = (book, shelf) => {
+
+    let {books} = this.state;
+    books.concat([book])
+
     BooksAPI.update(book, shelf).then((results) => {
       this.setState((state) => ({
-        books: state.books.concat([book])
+        books
       }))
     })
   }
