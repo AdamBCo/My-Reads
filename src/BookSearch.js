@@ -8,19 +8,31 @@ import Book from './Book';
 class BookSearch extends Component {
 
   state = {
-    books: []
+    results: []
   }
 
   updateQuery = (query) => {
 
     query.trim()
 
-    BooksAPI.search(query).then(books => {
-      console.log(books);
+    const {books} = this.props;
 
-      if (books instanceof Array) {
+    BooksAPI.search(query).then(searchResults => {
+
+      if (searchResults instanceof Array) {
+
+        let results = []
+
+        for (let result of searchResults) {
+          const book = books.filter(b => b.id === result.id)
+          if (book[0]) {
+            results.push(book[0])
+          } else {
+            results.push(result)
+          }
+        }
         this.setState((state) => ({
-          books
+          results
         }))
       }
     })
@@ -28,7 +40,7 @@ class BookSearch extends Component {
 
   render() {
 
-    const {books} = this.state;
+    const {results} = this.state;
     const {moveBook} = this.props;
 
     return (
@@ -55,7 +67,7 @@ class BookSearch extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-            {books.map(book => (
+            {results.map(book => (
               <Book key={book.id} book={book} moveBook={moveBook} />
             ))}
           </ol>

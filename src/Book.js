@@ -23,6 +23,10 @@ class Book extends Component {
 
     book.shelf = shelf
 
+    if (shelf) {
+      this.setState({shelf})
+    }
+
     moveBook(book, shelf)
   }
 
