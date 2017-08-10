@@ -21,9 +21,16 @@ class BooksApp extends React.Component {
   moveBook = (book, shelf) => {
 
     let {books} = this.state;
-    books.concat([book])
+    books = books.filter(b => b.id !== book.id)
+
+    if (shelf !== "none") {
+      books = books.concat([book])
+    }
+
+    console.log(books);
 
     BooksAPI.update(book, shelf).then((results) => {
+
       this.setState((state) => ({
         books
       }))
@@ -43,6 +50,7 @@ class BooksApp extends React.Component {
         <Route exact path="/search" render={({history}) => (
             <BookSearch moveBook={(book, section) => {
               this.moveBook(book, section)
+              history.push('/')
             }} />)} />
       </div>
     )

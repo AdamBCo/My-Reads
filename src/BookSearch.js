@@ -8,7 +8,6 @@ import Book from './Book';
 class BookSearch extends Component {
 
   state = {
-    query: '',
     books: []
   }
 
@@ -16,11 +15,14 @@ class BookSearch extends Component {
 
     query.trim()
 
-    BooksAPI.search(query).then(results => {
-      this.setState((state) => ({
-        query: query,
-        books: results
-      }))
+    BooksAPI.search(query).then(books => {
+      console.log(books);
+
+      if (books instanceof Array) {
+        this.setState((state) => ({
+          books
+        }))
+      }
     })
   }
 
